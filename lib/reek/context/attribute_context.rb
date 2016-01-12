@@ -6,7 +6,10 @@ module Reek
     # A context wrapper for attribute definitions found in a syntax tree.
     #
     class AttributeContext < CodeContext
+      attr_accessor :visibility
+
       def initialize(context, exp, send_expression)
+        @visibility = :public
         @send_expression = send_expression
         super context, exp
       end

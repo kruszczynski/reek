@@ -348,9 +348,10 @@ RSpec.describe Reek::ContextBuilder do
       EOS
 
       root = context_tree_for(code)
-      module_context = root.children.first
-      contexts = module_context.children
-      expect(contexts[0].visibility).to eq :public
+      foo_context = root.children.first
+      bar_context = foo_context.children.first
+      nested_baz_context = bar_context.children.first
+      expect(nested_baz_context.visibility).to eq :public
     end
   end
 

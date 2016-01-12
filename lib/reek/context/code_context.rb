@@ -21,7 +21,6 @@ module Reek
       delegate each_node: :exp
       delegate %i(name type) => :exp
 
-      attr_accessor :visibility
       attr_reader :children, :context, :exp, :statement_counter
 
       private_attr_reader :refs
@@ -65,7 +64,6 @@ module Reek
         @children           = []
         @statement_counter  = StatementCounter.new
         @refs               = AST::ObjectRefs.new
-        @visibility         = :public
 
         @context = context.append_child_context(self) if context
       end

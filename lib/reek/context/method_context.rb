@@ -6,7 +6,13 @@ module Reek
     # A context wrapper for any method definition found in a syntax tree.
     #
     class MethodContext < CodeContext
+      attr_accessor :visibility
       attr_reader :refs
+
+      def initialize(context, exp)
+        @visibility = :public
+        super
+      end
 
       def method_context?
         true
