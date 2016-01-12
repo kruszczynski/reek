@@ -59,7 +59,7 @@ module Reek
       #       (arg :x))
       #     (send nil :puts
       #       (lvar :x)))
-      def initialize(parent, exp)
+      def initialize(_parent, exp)
         @exp                = exp
         @children           = []
         @statement_counter  = StatementCounter.new

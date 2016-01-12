@@ -26,7 +26,6 @@ module Reek
       def apply_current_visibility(current_visibility)
         super if defined_as_instance_method?
       end
-
     end
   end
 end
