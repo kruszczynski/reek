@@ -7,24 +7,16 @@ module Reek
     # context tree. This context will not be part of the resulting tree, but
     # will track context and visibility separately while building is in
     # progress.
-    class GhostContext
+    class GhostContext < ModuleContext
       attr_reader :children
-      private_attr_reader :visibility_tracker
 
-      def initialize(parent, _exp)
-        @context = parent
-        @children = []
-        @visibility_tracker = VisibilityTracker.new
-      end
-
-      def register_with_parent(_parent)
-        nil
+      def register_with_parent(parent)
+        @parent = parent
       end
 
       def append_child_context(child)
-        @children << child
-        real_parent = @context.append_child_context(child)
-        visibility_tracker.set_child_visibility(child)
+        real_parent = parent.append_child_context(child)
+        super
         real_parent
       end
 
@@ -51,11 +43,11 @@ module Reek
       end
 
       def record_use_of_self
-        @context.record_use_of_self
+        parent.record_use_of_self
       end
 
       def statement_counter
-        @context.statement_counter
+        parent.statement_counter
       end
     end
   end
