@@ -484,7 +484,7 @@ module Reek
       arg_names = exp.arg_names
       current_context.track_visibility(method_name, arg_names)
       current_context.track_singleton_visibility(method_name, arg_names)
-      register_attributes(exp) if exp.attribute_writer?
+      register_attributes(exp)
     end
 
     def handle_send_for_methods(exp)
@@ -493,6 +493,7 @@ module Reek
     end
 
     def register_attributes(exp)
+      return unless exp.attribute_writer?
       klass = current_context.attribute_context_class
       exp.args.each do |arg|
         append_new_context(klass, arg, exp)
