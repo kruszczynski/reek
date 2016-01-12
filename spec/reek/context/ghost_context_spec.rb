@@ -25,7 +25,7 @@ RSpec.describe Reek::Context::GhostContext do
     it "sets the child's parent to the grandparent context" do
       child = Reek::Context::CodeContext.new(ghost, sexp(:foo))
 
-      expect(child.context).to eq parent
+      expect(child.parent).to eq parent
     end
 
     it 'appends the child to the list of children' do
@@ -40,7 +40,7 @@ RSpec.describe Reek::Context::GhostContext do
       it 'sets the childs parent to its remote ancestor' do
         child = Reek::Context::CodeContext.new(child_ghost, sexp(:foo))
 
-        expect(child.context).to eq parent
+        expect(child.parent).to eq parent
       end
     end
   end

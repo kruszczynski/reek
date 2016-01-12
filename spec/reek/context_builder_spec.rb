@@ -27,7 +27,7 @@ RSpec.describe Reek::ContextBuilder do
         end
 
         it 'holds a reference to the parent context' do
-          expect(module_context.send(:context)).to eq(context_tree)
+          expect(module_context.parent).to eq(context_tree)
         end
 
         describe 'the module node' do
@@ -39,7 +39,7 @@ RSpec.describe Reek::ContextBuilder do
           end
 
           it 'holds a reference to the parent context' do
-            expect(method_context.send(:context)).to eq(module_context)
+            expect(method_context.parent).to eq(module_context)
           end
         end
       end
@@ -396,7 +396,7 @@ RSpec.describe Reek::ContextBuilder do
       method_context = class_context.children.first
 
       expect(method_context).to be_instance_of Reek::Context::SingletonMethodContext
-      expect(method_context.context).to eq class_context
+      expect(method_context.parent).to eq class_context
     end
   end
 end

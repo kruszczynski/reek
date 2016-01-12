@@ -21,13 +21,13 @@ module Reek
       delegate each_node: :exp
       delegate %i(name type) => :exp
 
-      attr_reader :children, :context, :exp, :statement_counter
+      attr_reader :children, :parent, :exp, :statement_counter
 
       private_attr_reader :refs
 
       # Initializes a new CodeContext.
       #
-      # @param context [CodeContext, nil] The parent context
+      # @param parent [CodeContext, nil] The parent context
       # @param exp [Reek::AST::Node] The code described by this context
       #
       # For example, given the following code:
@@ -40,7 +40,7 @@ module Reek
       #
       # The {ContextBuilder} object first instantiates a {RootContext}, which has no parent.
       #
-      # Next, it instantiates a {ModuleContext}, with +context+ being the
+      # Next, it instantiates a {ModuleContext}, with +parent+ being the
       # {RootContext} just created, and +exp+ looking like this:
       #
       #  (class
@@ -52,20 +52,20 @@ module Reek
       #        (lvar :x))))
       #
       # Finally, {ContextBuilder} will instantiate a {MethodContext}. This time,
-      # +context+ is the {ModuleContext} created above, and +exp+ is:
+      # +parent+ is the {ModuleContext} created above, and +exp+ is:
       #
       #   (def :foo
       #     (args
       #       (arg :x))
       #     (send nil :puts
       #       (lvar :x)))
-      def initialize(context, exp)
+      def initialize(parent, exp)
         @exp                = exp
         @children           = []
         @statement_counter  = StatementCounter.new
         @refs               = AST::ObjectRefs.new
 
-        @context = context.append_child_context(self) if context
+        @parent = parent.append_child_context(self) if parent
       end
 
       # Iterate over each AST node (see `Reek::AST::Node`) of a given type for the current expression.
@@ -93,9 +93,8 @@ module Reek
         end
       end
 
-      alias_method :parent, :context
-
-      # Register a child context. Used by a child context to register itself with its parent.
+      # Register a context as a child context of this context. This is
+      # generally used by a child context to register itself with its parent.
       #
       # @param child [CodeContext] the child context to register
       def append_child_context(child)
@@ -132,11 +131,11 @@ module Reek
       end
 
       def full_name
-        exp.full_name(context ? context.full_name : '')
+        exp.full_name(parent ? parent.full_name : '')
       end
 
       def config_for(detector_class)
-        context_config_for(detector_class).merge(
+        parent_config_for(detector_class).merge(
           configuration_via_code_commment[detector_class.smell_type] || {})
       end
 
@@ -179,8 +178,8 @@ module Reek
         exp.full_comment || ''
       end
 
-      def context_config_for(detector_class)
-        context ? context.config_for(detector_class) : {}
+      def parent_config_for(detector_class)
+        parent ? parent.config_for(detector_class) : {}
       end
     end
   end
