@@ -22,9 +22,8 @@ module Reek
         true
       end
 
-      # Was this method defined with an instance method-like syntax?
-      def defined_as_instance_method?
-        true
+      def apply_current_visibility(current_visibility)
+        self.visibility = current_visibility
       end
 
       private_attr_reader :send_expression

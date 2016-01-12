@@ -53,6 +53,10 @@ module Reek
         true
       end
 
+      def apply_current_visibility(current_visibility)
+        self.visibility = current_visibility
+      end
+
       def module_function?
         visibility == :module_function
       end
