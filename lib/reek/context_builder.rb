@@ -149,9 +149,10 @@ module Reek
     # which we later use for smell detectors like FeatureEnvy.
     #
     def process_send(exp)
-      if current_context.module_context?
+      case current_context
+      when Context::ModuleContext, Context::GhostContext
         handle_send_for_modules exp
-      elsif current_context.method_context?
+      when Context::MethodContext
         handle_send_for_methods exp
       end
       process(exp)

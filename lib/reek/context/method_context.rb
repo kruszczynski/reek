@@ -14,10 +14,6 @@ module Reek
         super
       end
 
-      def method_context?
-        true
-      end
-
       def references_self?
         exp.depends_on_instance?
       end

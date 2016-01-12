@@ -37,10 +37,6 @@ module Reek
         SingletonAttributeContext
       end
 
-      def module_context?
-        true
-      end
-
       def track_visibility(visibility, names)
         visibility_tracker.track_visibility children: children,
                                             visibility: visibility,
