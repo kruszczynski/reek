@@ -150,7 +150,7 @@ module Reek
     #
     def process_send(exp)
       case current_context
-      when Context::ModuleContext, Context::GhostContext
+      when Context::ModuleContext
         handle_send_for_modules exp
       when Context::MethodContext
         handle_send_for_methods exp
