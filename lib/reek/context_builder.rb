@@ -474,7 +474,9 @@ module Reek
     # @return [Context::*Context] - the context that was appended
     #
     def append_new_context(klass, *args)
-      klass.new(current_context, *args)
+      klass.new(current_context, *args).tap do |new_context|
+        new_context.register_with_parent(current_context)
+      end
     end
 
     def handle_send_for_modules(exp)

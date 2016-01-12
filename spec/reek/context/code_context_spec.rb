@@ -48,6 +48,7 @@ RSpec.describe Reek::Context::CodeContext do
       let(:outer)      { Reek::Context::CodeContext.new(nil, double('exp1')) }
 
       before :each do
+        ctx.register_with_parent outer
         allow(outer).to receive(:full_name).at_least(:once).and_return(outer_name)
       end
 
@@ -173,6 +174,7 @@ RSpec.describe Reek::Context::CodeContext do
     let(:sniffer) { double('sniffer') }
 
     before :each do
+      context.register_with_parent(outer)
       allow(sniffer).to receive(:smell_type).and_return('DuplicateMethodCall')
     end
 
@@ -197,22 +199,28 @@ RSpec.describe Reek::Context::CodeContext do
     end
   end
 
-  describe '#initialize' do
+  describe '#register_with_parent' do
     let(:context) { Reek::Context::CodeContext.new(nil, double('exp1')) }
     let(:first_child) { Reek::Context::CodeContext.new(context, double('exp2')) }
     let(:second_child) { Reek::Context::CodeContext.new(context, double('exp3')) }
 
     it "appends the element to the parent context's list of children" do
+      first_child.register_with_parent context
+      second_child.register_with_parent context
+
       expect(context.children).to eq [first_child, second_child]
     end
   end
 
   describe '#each' do
     let(:context) { Reek::Context::CodeContext.new(nil, double('exp1')) }
-    let!(:first_child) { Reek::Context::CodeContext.new(context, double('exp2')) }
-    let!(:second_child) { Reek::Context::CodeContext.new(context, double('exp3')) }
+    let(:first_child) { Reek::Context::CodeContext.new(context, double('exp2')) }
+    let(:second_child) { Reek::Context::CodeContext.new(context, double('exp3')) }
 
     it 'yields each child' do
+      first_child.register_with_parent context
+      second_child.register_with_parent context
+
       result = []
       context.each do |ctx|
         result << ctx

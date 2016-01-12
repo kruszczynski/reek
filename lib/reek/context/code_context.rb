@@ -64,8 +64,6 @@ module Reek
         @children           = []
         @statement_counter  = StatementCounter.new
         @refs               = AST::ObjectRefs.new
-
-        @parent = parent.append_child_context(self) if parent
       end
 
       # Iterate over each AST node (see `Reek::AST::Node`) of a given type for the current expression.
@@ -91,6 +89,10 @@ module Reek
         children.each do |child|
           child.each(&block)
         end
+      end
+
+      def register_with_parent(parent)
+        @parent = parent.append_child_context(self) if parent
       end
 
       # Register a context as a child context of this context. This is

@@ -17,6 +17,10 @@ module Reek
         @visibility_tracker = VisibilityTracker.new
       end
 
+      def register_with_parent(_parent)
+        nil
+      end
+
       def append_child_context(child)
         @children << child
         real_parent = @context.append_child_context(child)
