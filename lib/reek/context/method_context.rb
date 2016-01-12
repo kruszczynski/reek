@@ -5,6 +5,7 @@ module Reek
     #
     # A context wrapper for any method definition found in a syntax tree.
     #
+    # :reek:Attribute
     class MethodContext < CodeContext
       attr_accessor :visibility
       attr_reader :refs
