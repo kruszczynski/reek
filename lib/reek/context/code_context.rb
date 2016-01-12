@@ -22,8 +22,7 @@ module Reek
       delegate %i(name type) => :exp
 
       attr_accessor :visibility
-      attr_reader :children, :context, :exp
-      attr_reader :statement_counter
+      attr_reader :children, :context, :exp, :statement_counter
 
       private_attr_reader :refs
 
