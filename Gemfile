@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'unparser', github: 'chastell/unparser', branch: 'allow_parser_2.3'
+
 group :development do
   gem 'aruba',         '~> 0.10.0'
   gem 'ataru',         '~> 0.2.0'
